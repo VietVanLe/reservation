@@ -1,11 +1,21 @@
 // require('./bootstrap');
 
 window.Vue = require('vue').default;
-import App from '@/components/App'
-import router from '@/routers/index'
-import './plugins'
+import App from '@/components/App';
+import router from '@/routers/index';
+import store from "@/stores";
+import '@/plugins';
+import '@/assets/css/style.css'
+import '@/backtotop'
+import '@/fontawesome'
+import { ApiService } from '@/services';
+import Vuelidate from 'vuelidate'
+Vue.use(Vuelidate)
 
+ApiService.init()
+ApiService.setHeader()
 new Vue({
   router,
-  render: h => h(App),
-}).$mount('#app')
+  store,
+  render: (h)=> h(App),
+}).$mount('#app');

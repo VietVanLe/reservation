@@ -177,3 +177,5 @@ function respondWithToken($token, $type = 'api', $refreshToken = null, $user = n
 
     return responseCreated($response);
 }
+
+
