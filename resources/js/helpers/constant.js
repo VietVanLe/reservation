@@ -18,10 +18,11 @@ const workTime= [
   '17:00',
 ];
 const timeShop = ['2022-08-15 12:30', '2022-08-15 13:00', ' 2022-08-15 13:30',  '2022-08-15 14:00'];
-// 
+const styleTable = ['Any','Table','Counter','Outside','Semi-Private','Tatami'];
 export {
   dateTimeFormat,
   yearMonthFormat,
   workTime,
-  timeShop
+  timeShop,
+  styleTable
 }

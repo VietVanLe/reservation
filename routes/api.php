@@ -38,7 +38,9 @@ Route::group([
 Route::group([
     'prefix' => 'auth'
 ], function ($router) {
-    Route::get('/time/{}', [SettingController::class, 'index']);
-    Route::get('/food', [FoodController::class, 'index']);
+    Route::get('/time', [SettingController::class, 'index']);
+    // Route::get('/food', [FoodController::class, 'index']);
+    Route::post('/add-reservation', [ReservationController::class, 'add']);
+    Route::get('/chi-tiet-dat-lich', [ReservationController::class, 'detailReservation']);
 });
 
