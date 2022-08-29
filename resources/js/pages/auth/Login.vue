@@ -21,7 +21,6 @@
     </b-row>
   </b-container>
 </template>
-
 <script>
 import { UserService } from '@/services'
 
@@ -38,12 +37,13 @@ export default {
   methods: {
     handleSubmitLogin() {
       UserService.login(this.form).then( response => {
+        this.$toastr.success('Đăng nhập thành công!')
         this.$router.push({ name: 'home'}, () => {})
-
+        
         this.$store.dispatch('actionSetToken', response.data.access_token)
         this.$store.dispatch('actionSetUser', response.data.user)
       }).catch(errors => {
-        // có thể xử lý dc
+        // this.$toastr.error(errors.data.message)
       })
     }
   },

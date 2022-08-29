@@ -51,6 +51,7 @@
 
 <script>
 import { timeShop } from '@/helpers/constant'
+import { ReservationService } from '@/services'
 export default {
   name: 'comp-table',
 
@@ -59,6 +60,9 @@ export default {
       timeShop: timeShop,
       isActive: true,
       circleCheck: '',
+      user_id: '',
+      detail: null,
+    
     };
   },
   props: {
@@ -93,18 +97,38 @@ export default {
     timett: {
       type: Array,
       default: []
+    },
+    reservation: {
+      type: Object,
+      default: null
+    },
+    itemTable: {
+      type: String,
+      default: ''
     }
   },
 
   watch: {
-    // classDisable(){
-    //   this.disable()
-    // }
+
   },
   methods: {
     selectTime(time) {
+      let datetime = { time: time.value, table: this.itemTable, user_id: this.$store.getters.getUser.id};
+      let form = this.reservation;
+      let data =  {...datetime,...form};
+      // this.detail = data
+      console.log(data,'kkkk');
+      confirm('Bạn muốn đặt lịch này không?');
+      ReservationService.AddReservation(data)
+        .then((response) => {
+          this.$toastr.success(response.msg || 'Thành công')
+        })
+        .catch((errors) => {
+          this.$toastr.success('Thất bại')
+        });
+      // console.log(form);
       this.circleCheck = time.value;
-      console.log(time.value);
+      // console.log(time.value);
     },
     nextDate() {
       this.$emit('next');

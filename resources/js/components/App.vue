@@ -8,8 +8,10 @@
   export default {
     name: 'App',
     data() {
-      return {}
-    }
+      return {
+        isLoading: false
+      }
+    },
   }
 </script>
 

@@ -21,6 +21,9 @@ const ApiService = {
     Vue.axios.interceptors.request.use(
       (request) => {
         const accessToken = store.getters.getToken
+        if (accessToken) {	    
+            request.headers.common['Authorization'] = `Bearer ${accessToken}`;
+        }
         if (request.setLoading) {
           store.dispatch(ACTION_SET_LOADING)
         }
