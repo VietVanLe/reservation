@@ -27,7 +27,8 @@
             </ul>
           </li>
 
-          <li>
+          <li @click="detail">
+           
             <font-awesome-icon icon="fa-solid fa-utensils" class="icon" />
             My Reservations
           </li>
@@ -91,13 +92,14 @@
 </template>
 
 <script>
-import { UserService } from '@/services';
+import { UserService, ReservationService } from '@/services';
+import EventBus from '@/app.js'
 export default {
   name: 'Header',
 
   data() {
     return {
-      isLogin: false
+      isLogin: false,
     };
   },
   created() {
@@ -107,15 +109,15 @@ export default {
     login(){
       this.$router.push({name: 'login'}, ()=>{})
     },
+    detail(){
+      this.$router.push({name: 'inforreservation'}, ()=>{})
+    },
     logout(){
       UserService.logout().then(response => {
-        console.log('ok')
-        // 1.thông báo login thành công (toast)
-        // 2.redirect trang login
-        // this.$router.push({ name: 'login'}, () => {})
-        // // 3. clear (vuex + localStorage)
-        // this.$store.dispatch('actionSetToken', '')
-        // this.$store.dispatch('actionSetUser', null)
+        this.$toastr.success('Đăng xuất thành công')
+        this.$router.push({ name: 'login'}, () => {})
+        this.$store.dispatch('actionSetToken', '')
+        this.$store.dispatch('actionSetUser', null)
       }).catch(errors => {
 
       })

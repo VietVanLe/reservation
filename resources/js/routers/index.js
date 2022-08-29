@@ -4,6 +4,7 @@ import authRoute from '@/routers/auth'
 import stores from '@/stores'
 import routers from '@/routers'
 import Home from '@/pages/Home';
+import detail from '@/components/detailreservation/detail';
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,11 @@ const routes = [
     meta: {
       isLogin: true
     },
+  },
+  {
+    path: '/chi-tiet-dat-lich',
+    name: 'inforreservation',
+    component: detail,
   },
   ...authRoute
 

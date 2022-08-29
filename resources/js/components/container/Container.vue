@@ -33,17 +33,19 @@
         <div class="body__booking-1">
           <div class="body__booking-1-people padding-width">
             <font-awesome-icon icon="fa-solid fa-user" class="body__booking-1-icon" />
-            <select name="" id="" @change="addTable()"
+            <select name="" id="" @change="addTable()" v-model="form.adult"
                     class="body__booking-1-select error-parent-no-tooltip border-bottom boder-none">
               <option value="">--Adults--</option>
-              <option value="">1</option>
-              <option value="">2</option>
-              <option value="">3</option>
-              <option value="">4</option>
-              <option value="">5</option>
-              <option value="">6</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
             </select>
+           
           </div>
+         
           <div class="body__booking-1-calender padding-width">
             <font-awesome-icon icon="fa-solid fa-calendar-days" class="body__booking-1-icon" />
             <input type="date" v-model="getday"
@@ -53,9 +55,16 @@
             <font-awesome-icon icon="fa-solid fa-clock" class="body__booking-1-icon" />
             <select name="" id="" class="body__booking-1-select error-parent-no-tooltip border-bottom boder-none">
               <option value="">--SelectTimer--</option>
-              <option value="">10:00AM</option>
-              <option value="">11:00AM</option>
-              <option value="">12:00AM</option>
+              <option value="10:00">10:00AM</option>
+              <option value="10:30">11:00AM</option>
+              <option value="11:00">11:00AM</option>
+              <option value="11:30">11:30AM</option>
+              <option value="12:00">12:00PM</option>
+              <option value="12:30">12:30PM</option>
+              <option value="13:00">13:00PM</option>
+              <option value="13:30">13:30PM</option>
+              <option value="14:00">14:00PM</option>
+              <option value="14:30">14:30PM</option>
               <option value="">13:00PM</option>
             </select>
           </div>
@@ -64,14 +73,14 @@
           <div class="body__booking-2-children padding-width">
             <font-awesome-icon icon="fa-solid fa-child-reaching" class="body__booking-1-icon " />
             <div class="body__booking-2-children-item">
-              <select name="" id="" class="body__booking-1-select boder-none border-bottom1">
+              <select name="" id="" class="body__booking-1-select boder-none border-bottom1" v-model="form.childrent">
                 <option value="">--Children--</option>
-                <option value="">1</option>
-                <option value="">2</option>
-                <option value="">3</option>
-                <option value="">4</option>
-                <option value="">5</option>
-                <option value="">6</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
               </select>
               <div class=""></div>
             </div>
@@ -79,32 +88,33 @@
           </div>
           <div class="body__booking-2-baby padding-width">
             <font-awesome-icon icon="fa-solid fa-baby" class="body__booking-1-icon boder-none" />
-            <select name="" id="" class="body__booking-1-select boder-none border-bottom1">
+            <select name="" id="" class="body__booking-1-select boder-none border-bottom1" v-model="form.baby">
               <option value="">--Baby--</option>
-              <option value="">1</option>
-              <option value="">2</option>
-              <option value="">3</option>
-              <option value="">4</option>
-              <option value="">5</option>
-              <option value="">6</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
             </select>
           </div>
         </div>
         <div class="body__seattype">
           <font-awesome-icon icon="fa-solid fa-chair" class="body__booking-1-icon1" />
           <div class="body__seattype--group">
-            <label class="body__seattype-radio margin-bottom ">Any</label>
-            <label class="body__seattype-radio margin-bottom">Table</label>
-            <label class="body__seattype-radio margin-bottom">Counter</label>
-            <label class="body__seattype-radio margin-bottom">Outside</label>
-            <label class="body__seattype-radio margin-bottom">Semi-Private</label>
-            <label class="body__seattype-radio margin-bottom">Tatami</label>
+          
+             <label class="body__seattype-radio margin-bottom" v-for="(item, index) in styleTable" :key="index"
+             v-on:click = "selectTable(item)">{{item}}
+             <input type="radio" name="radioTable" value = "item">
+             </label>
           </div>
         </div>
       </div>
       <div class="body__table">
-        <comp-table v-if="selectedComponent" :arr="arr" :timeOrder="timeOrder" :timeWorkShop="timeWorkShop"
-                    :getday="getday" :monthLabels="monthLabels" v-on:next="next" v-on:prev="prev" :classDis="classDis" :timett="timett" />
+        <comp-table v-if="selectedComponent" :arr="arr" :timeOrder="timeOrder" :timeWorkShop="timeWorkShop" :reservation="reservation"
+                    :getday="getday" :monthLabels="monthLabels" v-on:next="next" v-on:prev="prev" :classDis="classDis" :timett="timett" 
+                    :itemTable="itemTable"
+                    />
       </div>
       <div class="body__menu">
         <div class="body__menu-img ">
@@ -270,8 +280,7 @@
 import BackToTop from 'vue-backtotop'
 import CompTable from '@/components/reservation/CompTable.vue'
 import moment from 'moment';
-import { workTime, timeShop } from '@/helpers/constant.js'
-
+import { workTime, timeShop, styleTable } from '@/helpers/constant.js'
 export default {
   name: 'Container',
   components: {
@@ -280,8 +289,14 @@ export default {
   },
   data() {
     return {
+      form:{
+        adult: '',
+        childrent: '',
+        baby: '', 
+        shop_id: '1'
+      },
       isShow: false,
-      getday: '2022/08/20',
+      getday: '',
       arr: [],
       selectedComponent: false,
       timeOrder: [],
@@ -290,6 +305,9 @@ export default {
       monthLabels: [],
       timeWorkShop: [],
       classDis: ' ',
+      reservation: null,
+      styleTable: styleTable,
+      itemTable: ''
     };
   },
   props: {
@@ -300,6 +318,8 @@ export default {
   },
   watch: {
     getday() {
+      this.reservation = this.form;
+      console.log(this.form);
       this.$emit('getDay',this.getday);
       let days = [];
       let today = moment(this.getday);
@@ -386,6 +406,11 @@ export default {
     },
     prev() {
       this.getday = moment(this.getday).subtract(7, 'd').format('YYYY-MM-DD');
+    },
+    selectTable(item){
+      // console.log(item);
+      this.itemTable = item; 
+
     }
   }
 };
